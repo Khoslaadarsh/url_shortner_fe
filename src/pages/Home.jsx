@@ -27,7 +27,8 @@ export default function Home() {
 
   const isToday = (date) => date && date.isSame(dayjs(), "day");
 
-  const disabledDate = (current) => current && current.isBefore(dayjs().startOf("day"));
+  const disabledDate = (current) =>
+    current && current.isBefore(dayjs().startOf("day"));
 
   const disabledTime = () => {
     if (!isToday(expiryDate)) return {};

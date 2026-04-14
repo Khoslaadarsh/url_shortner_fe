@@ -1,20 +1,24 @@
-import { Link } from 'react-router-dom'
-import { LinkOutlined, GithubOutlined, TwitterOutlined } from '@ant-design/icons'
+import { Link } from "react-router-dom";
+import {
+  LinkOutlined,
+  GithubOutlined,
+  TwitterOutlined,
+} from "@ant-design/icons";
 
 const FOOTER_LINKS = {
   Product: [
-    { label: 'Features', to: '/features' },
-    { label: 'Pricing', to: '/pricing' },
+    { label: "Features", to: "/features" },
+    { label: "Pricing", to: "/pricing" },
   ],
   Company: [
-    { label: 'About', to: '/about' },
-    { label: 'Contact', to: '/contact' },
+    { label: "About", to: "/about" },
+    { label: "Contact", to: "/contact" },
   ],
   Legal: [
-    { label: 'Privacy', to: '/privacy' },
-    { label: 'Terms', to: '/terms' },
+    { label: "Privacy", to: "/privacy" },
+    { label: "Terms", to: "/terms" },
   ],
-}
+};
 
 export default function AppFooter() {
   return (
@@ -63,15 +67,23 @@ export default function AppFooter() {
             © {new Date().getFullYear()} ToShort. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="GitHub">
+            <a
+              href="#"
+              className="text-gray-400 hover:text-white transition-colors"
+              aria-label="GitHub"
+            >
               <GithubOutlined className="text-xl" />
             </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
+            <a
+              href="#"
+              className="text-gray-400 hover:text-white transition-colors"
+              aria-label="Twitter"
+            >
               <TwitterOutlined className="text-xl" />
             </a>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }
