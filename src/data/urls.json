@@ -1,0 +1,170 @@
+{
+  "user": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "joinedAt": "2024-01-15"
+  },
+  "urls": [
+    {
+      "key": "1",
+      "originalUrl": "https://www.example.com/very/long/url/that/needs/shortening/for/better/sharing",
+      "shortUrl": "https://short.ly/ex1a2b",
+      "clicks": 342,
+      "createdAt": "Apr 1, 2025"
+    },
+    {
+      "key": "2",
+      "originalUrl": "https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms/edit",
+      "shortUrl": "https://short.ly/gsh3c4",
+      "clicks": 87,
+      "createdAt": "Apr 2, 2025"
+    },
+    {
+      "key": "3",
+      "originalUrl": "https://github.com/facebook/react/blob/main/packages/react/src/React.js",
+      "shortUrl": "https://short.ly/gh5d6e",
+      "clicks": 510,
+      "createdAt": "Apr 3, 2025"
+    },
+    {
+      "key": "4",
+      "originalUrl": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype",
+      "shortUrl": "https://short.ly/mdn7f8",
+      "clicks": 23,
+      "createdAt": "Apr 4, 2025"
+    },
+    {
+      "key": "5",
+      "originalUrl": "https://tailwindcss.com/docs/installation/using-vite",
+      "shortUrl": "https://short.ly/tw9g0h",
+      "clicks": 198,
+      "createdAt": "Apr 5, 2025"
+    },
+    {
+      "key": "6",
+      "originalUrl": "https://react.dev/reference/react/useState",
+      "shortUrl": "https://short.ly/rc1i2j",
+      "clicks": 415,
+      "createdAt": "Apr 6, 2025"
+    },
+    {
+      "key": "7",
+      "originalUrl": "https://ant.design/components/table",
+      "shortUrl": "https://short.ly/ant3k4",
+      "clicks": 66,
+      "createdAt": "Apr 7, 2025"
+    },
+    {
+      "key": "8",
+      "originalUrl": "https://vitejs.dev/guide/features.html",
+      "shortUrl": "https://short.ly/vt5l6m",
+      "clicks": 134,
+      "createdAt": "Apr 8, 2025"
+    },
+    {
+      "key": "9",
+      "originalUrl": "https://www.npmjs.com/package/react-router-dom",
+      "shortUrl": "https://short.ly/npm7n8",
+      "clicks": 289,
+      "createdAt": "Apr 9, 2025"
+    },
+    {
+      "key": "10",
+      "originalUrl": "https://stackoverflow.com/questions/63587500/how-to-use-react-router-dom-v6",
+      "shortUrl": "https://short.ly/so9o0p",
+      "clicks": 47,
+      "createdAt": "Apr 10, 2025"
+    },
+    {
+      "key": "11",
+      "originalUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "shortUrl": "https://short.ly/yt1q2r",
+      "clicks": 921,
+      "createdAt": "Mar 28, 2025"
+    },
+    {
+      "key": "12",
+      "originalUrl": "https://medium.com/better-programming/react-best-practices-2024",
+      "shortUrl": "https://short.ly/md3s4t",
+      "clicks": 173,
+      "createdAt": "Mar 25, 2025"
+    },
+    {
+      "key": "13",
+      "originalUrl": "https://www.figma.com/file/abc123/design-system?node-id=0%3A1",
+      "shortUrl": "https://short.ly/fg5u6v",
+      "clicks": 58,
+      "createdAt": "Mar 20, 2025"
+    },
+    {
+      "key": "14",
+      "originalUrl": "https://vercel.com/docs/deployments/overview",
+      "shortUrl": "https://short.ly/vr7w8x",
+      "clicks": 312,
+      "createdAt": "Mar 15, 2025"
+    },
+    {
+      "key": "15",
+      "originalUrl": "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
+      "shortUrl": "https://short.ly/ts9y0z",
+      "clicks": 204,
+      "createdAt": "Mar 10, 2025"
+    },
+    {
+      "key": "16",
+      "originalUrl": "https://redux-toolkit.js.org/introduction/getting-started",
+      "shortUrl": "https://short.ly/rtk1a2",
+      "clicks": 91,
+      "createdAt": "Mar 5, 2025"
+    },
+    {
+      "key": "17",
+      "originalUrl": "https://nextjs.org/docs/app/building-your-application/routing",
+      "shortUrl": "https://short.ly/nxt3b4",
+      "clicks": 467,
+      "createdAt": "Feb 28, 2025"
+    },
+    {
+      "key": "18",
+      "originalUrl": "https://www.prisma.io/docs/getting-started/quickstart",
+      "shortUrl": "https://short.ly/prm5c6",
+      "clicks": 139,
+      "createdAt": "Feb 20, 2025"
+    },
+    {
+      "key": "19",
+      "originalUrl": "https://supabase.com/docs/guides/auth/social-login/auth-google",
+      "shortUrl": "https://short.ly/spb7d8",
+      "clicks": 376,
+      "createdAt": "Feb 14, 2025"
+    },
+    {
+      "key": "20",
+      "originalUrl": "https://axios-http.com/docs/intro",
+      "shortUrl": "https://short.ly/axs9e0",
+      "clicks": 55,
+      "createdAt": "Feb 8, 2025"
+    },
+    {
+      "key": "21",
+      "originalUrl": "https://tanstack.com/query/latest/docs/framework/react/overview",
+      "shortUrl": "https://short.ly/tq1f2g",
+      "clicks": 284,
+      "createdAt": "Jan 30, 2025"
+    },
+    {
+      "key": "22",
+      "originalUrl": "https://www.framer.com/motion/introduction/",
+      "shortUrl": "https://short.ly/fm3h4i",
+      "clicks": 118,
+      "createdAt": "Jan 22, 2025"
+    },
+    {
+      "key": "23",
+      "originalUrl": "https://zod.dev/?id=basic-usage",
+      "shortUrl": "https://short.ly/zod5j6",
+      "clicks": 43,
+      "createdAt": "Jan 15, 2025"
+    }
+  ]
+}

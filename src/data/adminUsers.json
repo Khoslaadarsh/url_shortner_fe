@@ -1,0 +1,67 @@
+{
+  "users": [
+    {
+      "id": "USR001",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "user",
+      "isActive": true,
+      "joinedAt": "2024-01-15",
+      "urls": [
+        { "key": "u1-1", "originalUrl": "https://github.com/facebook/react", "shortUrl": "https://short.ly/gh5d6e", "clicks": 510, "isActive": true, "createdAt": "Apr 3, 2025" },
+        { "key": "u1-2", "originalUrl": "https://tailwindcss.com/docs/installation", "shortUrl": "https://short.ly/tw9g0h", "clicks": 198, "isActive": true, "createdAt": "Apr 5, 2025" },
+        { "key": "u1-3", "originalUrl": "https://react.dev/reference/react/useState", "shortUrl": "https://short.ly/rc1i2j", "clicks": 415, "isActive": false, "createdAt": "Apr 6, 2025" },
+        { "key": "u1-4", "originalUrl": "https://ant.design/components/table", "shortUrl": "https://short.ly/ant3k4", "clicks": 66, "isActive": true, "createdAt": "Apr 7, 2025" }
+      ]
+    },
+    {
+      "id": "USR002",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "role": "admin",
+      "isActive": true,
+      "joinedAt": "2023-11-02",
+      "urls": [
+        { "key": "u2-1", "originalUrl": "https://vercel.com/docs/deployments/overview", "shortUrl": "https://short.ly/vr7w8x", "clicks": 312, "isActive": true, "createdAt": "Mar 15, 2025" },
+        { "key": "u2-2", "originalUrl": "https://nextjs.org/docs/app/building-your-application/routing", "shortUrl": "https://short.ly/nxt3b4", "clicks": 467, "isActive": true, "createdAt": "Feb 28, 2025" }
+      ]
+    },
+    {
+      "id": "USR003",
+      "name": "Bob Johnson",
+      "email": "bob@example.com",
+      "role": "user",
+      "isActive": false,
+      "joinedAt": "2024-03-20",
+      "urls": [
+        { "key": "u3-1", "originalUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "shortUrl": "https://short.ly/yt1q2r", "clicks": 921, "isActive": true, "createdAt": "Mar 28, 2025" },
+        { "key": "u3-2", "originalUrl": "https://medium.com/better-programming/react-best-practices", "shortUrl": "https://short.ly/md3s4t", "clicks": 173, "isActive": false, "createdAt": "Mar 25, 2025" },
+        { "key": "u3-3", "originalUrl": "https://supabase.com/docs/guides/auth", "shortUrl": "https://short.ly/spb7d8", "clicks": 376, "isActive": true, "createdAt": "Feb 14, 2025" }
+      ]
+    },
+    {
+      "id": "USR004",
+      "name": "Alice Wang",
+      "email": "alice@example.com",
+      "role": "user",
+      "isActive": true,
+      "joinedAt": "2024-06-10",
+      "urls": [
+        { "key": "u4-1", "originalUrl": "https://tanstack.com/query/latest/docs/framework/react/overview", "shortUrl": "https://short.ly/tq1f2g", "clicks": 284, "isActive": true, "createdAt": "Jan 30, 2025" },
+        { "key": "u4-2", "originalUrl": "https://zod.dev/?id=basic-usage", "shortUrl": "https://short.ly/zod5j6", "clicks": 43, "isActive": true, "createdAt": "Jan 15, 2025" }
+      ]
+    },
+    {
+      "id": "USR005",
+      "name": "Carlos Rivera",
+      "email": "carlos@example.com",
+      "role": "user",
+      "isActive": true,
+      "joinedAt": "2024-08-22",
+      "urls": [
+        { "key": "u5-1", "originalUrl": "https://www.prisma.io/docs/getting-started/quickstart", "shortUrl": "https://short.ly/prm5c6", "clicks": 139, "isActive": false, "createdAt": "Feb 20, 2025" },
+        { "key": "u5-2", "originalUrl": "https://redux-toolkit.js.org/introduction/getting-started", "shortUrl": "https://short.ly/rtk1a2", "clicks": 91, "isActive": true, "createdAt": "Mar 5, 2025" }
+      ]
+    }
+  ]
+}
