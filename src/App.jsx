@@ -18,91 +18,93 @@ import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(true);
 
   return (
     <ConfigProvider theme={themes.user.antd}>
-    <BrowserRouter>
-      <ToastContainer stacked />
-      <Routes>
-        {/* Admin routes — no header/footer */}
-        <Route
-          path="/admin/login"
-          element={
-            <AdminThemeProvider>
-              <PublicOnlyRoute
-                isLoggedIn={isAdminLoggedIn}
-                redirectTo="/admin/dashboard"
-              >
-                <AdminLogin onAdminLogin={() => setIsAdminLoggedIn(true)} />
-              </PublicOnlyRoute>
-            </AdminThemeProvider>
-          }
-        />
-        <Route
-          path="/admin/dashboard"
-          element={
-            <AdminThemeProvider>
-              <AdminProtectedRoute isAdminLoggedIn={isAdminLoggedIn}>
-                <AdminDashboard onAdminLogout={() => setIsAdminLoggedIn(false)} />
-              </AdminProtectedRoute>
-            </AdminThemeProvider>
-          }
-        />
+      <BrowserRouter>
+        <ToastContainer stacked />
+        <Routes>
+          {/* Admin routes — no header/footer */}
+          <Route
+            path="/admin/login"
+            element={
+              <AdminThemeProvider>
+                <PublicOnlyRoute
+                  isLoggedIn={isAdminLoggedIn}
+                  redirectTo="/admin/dashboard"
+                >
+                  <AdminLogin onAdminLogin={() => setIsAdminLoggedIn(true)} />
+                </PublicOnlyRoute>
+              </AdminThemeProvider>
+            }
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminThemeProvider>
+                <AdminProtectedRoute isAdminLoggedIn={isAdminLoggedIn}>
+                  <AdminDashboard
+                    onAdminLogout={() => setIsAdminLoggedIn(false)}
+                  />
+                </AdminProtectedRoute>
+              </AdminThemeProvider>
+            }
+          />
 
-        {/* Public routes — with header/footer */}
-        <Route
-          path="/*"
-          element={
-            <PageLayout
-              isLoggedIn={isLoggedIn}
-              onLogout={() => setIsLoggedIn(false)}
-            >
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    // <ProtectedRoute isLoggedIn={isLoggedIn}>
-                    <Home />
-                    // </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/login"
-                  element={
-                    <PublicOnlyRoute
-                      isLoggedIn={isLoggedIn}
-                      redirectTo="/profile"
-                    >
-                      <Login onLogin={() => setIsLoggedIn(true)} />
-                    </PublicOnlyRoute>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <PublicOnlyRoute
-                      isLoggedIn={isLoggedIn}
-                      redirectTo="/profile"
-                    >
-                      <Register onLogin={() => setIsLoggedIn(true)} />
-                    </PublicOnlyRoute>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute isLoggedIn={isLoggedIn}>
-                      <MyProfile />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
-            </PageLayout>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          {/* Public routes — with header/footer */}
+          <Route
+            path="/*"
+            element={
+              <PageLayout
+                isLoggedIn={isLoggedIn}
+                onLogout={() => setIsLoggedIn(false)}
+              >
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      // <ProtectedRoute isLoggedIn={isLoggedIn}>
+                      <Home />
+                      // </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      <PublicOnlyRoute
+                        isLoggedIn={isLoggedIn}
+                        redirectTo="/profile"
+                      >
+                        <Login onLogin={() => setIsLoggedIn(true)} />
+                      </PublicOnlyRoute>
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <PublicOnlyRoute
+                        isLoggedIn={isLoggedIn}
+                        redirectTo="/profile"
+                      >
+                        <Register onLogin={() => setIsLoggedIn(true)} />
+                      </PublicOnlyRoute>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute isLoggedIn={isLoggedIn}>
+                        <MyProfile />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </PageLayout>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </ConfigProvider>
   );
 }

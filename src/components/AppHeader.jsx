@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Button, Drawer, Avatar, Dropdown } from "antd";
 import {
   LinkOutlined,
@@ -10,28 +11,15 @@ import {
 } from "@ant-design/icons";
 
 const NAV_LINKS = [
-  { label: "Home", to: "/" },
+  { label: "Home",     to: "/" },
   { label: "Features", to: "/features" },
-  { label: "Pricing", to: "/pricing" },
+  { label: "Pricing",  to: "/pricing" },
 ];
 
 const userMenuItems = (onLogout, onProfile) => [
-  {
-    key: "profile",
-    icon: <UserOutlined />,
-    label: "Profile",
-    onClick: onProfile,
-  },
-  {
-    type: "divider",
-  },
-  {
-    key: "logout",
-    icon: <LogoutOutlined />,
-    label: "Logout",
-    danger: true,
-    onClick: onLogout,
-  },
+  { key: "profile", icon: <UserOutlined />,  label: "Profile", onClick: onProfile },
+  { type: "divider" },
+  { key: "logout",  icon: <LogoutOutlined />, label: "Logout", danger: true, onClick: onLogout },
 ];
 
 export default function AppHeader({ isLoggedIn, onLogout }) {
@@ -46,29 +34,22 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
   const AuthButtons = ({ vertical = false }) =>
     isLoggedIn ? (
       <Dropdown
-        menu={{
-          items: userMenuItems(handleLogout, () => navigate("/profile")),
-        }}
+        menu={{ items: userMenuItems(handleLogout, () => navigate("/profile")) }}
         placement="bottomRight"
         trigger={["click"]}
       >
         <Avatar
           icon={<UserOutlined />}
           className="bg-primary cursor-pointer hover:opacity-90 transition-opacity"
-          size={38}
+          size={36}
         />
       </Dropdown>
     ) : (
-      <div
-        className={`flex ${vertical ? "flex-col w-full gap-2 mt-2" : "items-center gap-2"}`}
-      >
+      <div className={`flex ${vertical ? "flex-col w-full gap-2 mt-2" : "items-center gap-2"}`}>
         <Button
           size={vertical ? "large" : "middle"}
           block={vertical}
-          onClick={() => {
-            navigate("/login");
-            setDrawerOpen(false);
-          }}
+          onClick={() => { navigate("/login");    setDrawerOpen(false); }}
         >
           Login
         </Button>
@@ -76,10 +57,8 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
           type="primary"
           size={vertical ? "large" : "middle"}
           block={vertical}
-          onClick={() => {
-            navigate("/register");
-            setDrawerOpen(false);
-          }}
+          className="!shadow-md !shadow-orange-100"
+          onClick={() => { navigate("/register"); setDrawerOpen(false); }}
         >
           Sign up
         </Button>
@@ -87,12 +66,20 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
     );
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <motion.header
+      initial={{ y: -64, opacity: 0 }}
+      animate={{ y: 0,   opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="sticky top-0 z-50 border-b border-white/40 bg-white/80 backdrop-blur-xl shadow-sm"
+    >
+      {/* Subtle orange accent line on top */}
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+
+      <div className="max-w-6xl mx-auto px-4 h-15 flex items-center justify-between" style={{ height: 60 }}>
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 no-underline">
-          <div className="bg-primary text-white p-1.5 rounded-lg">
-            <LinkOutlined className="text-lg" />
+        <Link to="/" className="flex items-center gap-2 no-underline group">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-orange-400 text-white shadow-md shadow-orange-200 transition-transform group-hover:scale-105">
+            <LinkOutlined className="text-sm" />
           </div>
           <span className="text-gray-900 font-bold text-lg leading-none">
             To<span className="text-primary">Short</span>
@@ -100,12 +87,12 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-1">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.to}
               to={link.to}
-              className="text-gray-600 hover:text-primary font-medium text-sm transition-colors no-underline"
+              className="relative px-3 py-1.5 text-gray-500 hover:text-primary font-medium text-sm transition-colors no-underline rounded-lg hover:bg-orange-50"
             >
               {link.label}
             </Link>
@@ -117,7 +104,7 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
           {isLoggedIn && (
             <Link
               to="/profile"
-              className="text-gray-600 hover:text-primary font-medium text-sm transition-colors no-underline"
+              className="text-gray-500 hover:text-primary font-medium text-sm transition-colors no-underline px-3 py-1.5 rounded-lg hover:bg-orange-50"
             >
               My URLs
             </Link>
@@ -127,11 +114,11 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
 
         {/* Hamburger */}
         <button
-          className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg hover:bg-gray-100 transition-colors border-0 bg-transparent cursor-pointer"
+          className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg hover:bg-orange-50 transition-colors border-0 bg-transparent cursor-pointer text-gray-600"
           onClick={() => setDrawerOpen(true)}
           aria-label="Open menu"
         >
-          <MenuOutlined className="text-gray-700 text-lg" />
+          <MenuOutlined className="text-lg" />
         </button>
       </div>
 
@@ -148,8 +135,8 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
             className="flex items-center gap-2 no-underline"
             onClick={() => setDrawerOpen(false)}
           >
-            <div className="bg-primary text-white p-1 rounded-md">
-              <LinkOutlined />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-orange-400 text-white">
+              <LinkOutlined className="text-xs" />
             </div>
             <span className="text-gray-900 font-bold">
               To<span className="text-primary">Short</span>
@@ -164,17 +151,16 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
               key={link.to}
               to={link.to}
               onClick={() => setDrawerOpen(false)}
-              className="text-gray-700 hover:text-primary hover:bg-secondary font-medium text-base px-3 py-2 rounded-lg transition-colors no-underline"
+              className="text-gray-700 hover:text-primary hover:bg-orange-50 font-medium text-base px-3 py-2 rounded-lg transition-colors no-underline"
             >
               {link.label}
             </Link>
           ))}
         </nav>
-
         <div className="border-t border-gray-100 pt-4">
           <AuthButtons vertical />
         </div>
       </Drawer>
-    </header>
+    </motion.header>
   );
 }

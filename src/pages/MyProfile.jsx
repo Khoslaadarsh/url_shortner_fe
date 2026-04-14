@@ -1,41 +1,30 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import {
-  Table,
-  Button,
-  Typography,
-  Avatar,
-  Tag,
-  Space,
-  Modal,
-  Form,
-  Input,
-  Popconfirm,
-  message,
-  Tooltip,
-  Card,
+  Table, Button, Typography, Avatar, Tag, Space,
+  Modal, Form, Input, Popconfirm, message, Tooltip, Card,
 } from "antd";
 import {
-  UserOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  CopyOutlined,
-  LinkOutlined,
-  BarChartOutlined,
-  CalendarOutlined,
+  UserOutlined, EditOutlined, DeleteOutlined, CopyOutlined,
+  LinkOutlined, BarChartOutlined, CalendarOutlined,
 } from "@ant-design/icons";
 import profileData from "../data/urls.json";
 
-const { Title, Text } = Typography;
-
+const { Text } = Typography;
 const { user, urls } = profileData;
 
-export default function MyProfile() {
-  const [data, setData] = useState(urls);
-  const [editingRecord, setEditingRecord] = useState(null);
-  const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
+const fadeUp = (delay = 0) => ({
+  initial:    { opacity: 0, y: 20 },
+  animate:    { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay },
+});
 
-  // ── Edit ──────────────────────────────────────────────
+export default function MyProfile() {
+  const [data, setData]               = useState(urls);
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [form]                        = Form.useForm();
+  const [messageApi, contextHolder]   = message.useMessage();
+
   const openEdit = (record) => {
     setEditingRecord(record);
     form.setFieldsValue({ originalUrl: record.originalUrl });
@@ -45,10 +34,8 @@ export default function MyProfile() {
     form.validateFields().then((values) => {
       setData((prev) =>
         prev.map((row) =>
-          row.key === editingRecord.key
-            ? { ...row, originalUrl: values.originalUrl }
-            : row,
-        ),
+          row.key === editingRecord.key ? { ...row, originalUrl: values.originalUrl } : row
+        )
       );
       setEditingRecord(null);
       form.resetFields();
@@ -56,19 +43,16 @@ export default function MyProfile() {
     });
   };
 
-  // ── Delete ────────────────────────────────────────────
   const handleDelete = (key) => {
     setData((prev) => prev.filter((row) => row.key !== key));
     messageApi.success("URL deleted");
   };
 
-  // ── Copy ─────────────────────────────────────────────
   const handleCopy = (url) => {
     navigator.clipboard.writeText(url);
     messageApi.success("Copied to clipboard");
   };
 
-  // ── Columns ───────────────────────────────────────────
   const columns = [
     {
       title: "Original URL",
@@ -77,12 +61,7 @@ export default function MyProfile() {
       ellipsis: true,
       render: (url) => (
         <Tooltip title={url} placement="topLeft">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-700 hover:text-primary text-sm"
-          >
+          <a href={url} target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-primary text-sm">
             {url}
           </a>
         </Tooltip>
@@ -95,22 +74,11 @@ export default function MyProfile() {
       width: 200,
       render: (url) => (
         <div className="flex items-center gap-1">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:text-primary text-sm font-medium"
-          >
+          <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary text-sm font-medium">
             {url.replace("https://", "")}
           </a>
           <Tooltip title="Copy">
-            <Button
-              type="text"
-              size="small"
-              icon={<CopyOutlined />}
-              className="text-gray-400 hover:text-primary"
-              onClick={() => handleCopy(url)}
-            />
+            <Button type="text" size="small" icon={<CopyOutlined />} className="text-gray-400 hover:text-primary" onClick={() => handleCopy(url)} />
           </Tooltip>
         </div>
       ),
@@ -132,11 +100,7 @@ export default function MyProfile() {
       dataIndex: "createdAt",
       key: "createdAt",
       width: 140,
-      render: (date) => (
-        <Text type="secondary" className="text-sm">
-          {date}
-        </Text>
-      ),
+      render: (date) => <Text type="secondary" className="text-sm">{date}</Text>,
     },
     {
       title: "Actions",
@@ -145,13 +109,7 @@ export default function MyProfile() {
       render: (_, record) => (
         <Space size="small">
           <Tooltip title="Edit">
-            <Button
-              type="text"
-              size="small"
-              icon={<EditOutlined />}
-              className="text-gray-500 hover:text-primary"
-              onClick={() => openEdit(record)}
-            />
+            <Button type="text" size="small" icon={<EditOutlined />} className="text-gray-500 hover:text-primary" onClick={() => openEdit(record)} />
           </Tooltip>
           <Popconfirm
             title="Delete this URL?"
@@ -162,12 +120,7 @@ export default function MyProfile() {
             cancelText="Cancel"
           >
             <Tooltip title="Delete">
-              <Button
-                type="text"
-                size="small"
-                icon={<DeleteOutlined />}
-                className="text-gray-500 hover:text-red-500"
-              />
+              <Button type="text" size="small" icon={<DeleteOutlined />} className="text-gray-500 hover:text-red-500" />
             </Tooltip>
           </Popconfirm>
         </Space>
@@ -175,81 +128,80 @@ export default function MyProfile() {
     },
   ];
 
+  const totalClicks = data.reduce((sum, r) => sum + r.clicks, 0);
+
   return (
-    <div className="bg-gray-50 min-h-full py-10 px-4">
+    <div className="relative min-h-full overflow-hidden bg-gradient-to-br from-orange-50/60 via-white to-amber-50/30 py-10 px-4">
+      {/* Subtle background orb */}
+      <div className="pointer-events-none absolute -top-40 -right-40 h-96 w-96 rounded-full bg-orange-100/50 blur-3xl" />
+
       {contextHolder}
-      <div className="max-w-6xl mx-auto">
+      <div className="relative z-10 max-w-6xl mx-auto">
+
         {/* Profile card */}
-        <Card className="mb-6 rounded-2xl shadow-sm border-0">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <Avatar
-              size={72}
-              icon={<UserOutlined />}
-              className="bg-primary shrink-0"
-            />
-            <div className="flex-1">
-              <Title level={4} className="!mb-0">
-                {user.name}
-              </Title>
-              <Text type="secondary">{user.email}</Text>
-            </div>
-            <div className="flex gap-6 text-center">
-              <div>
-                <div className="text-2xl font-bold text-gray-800">
-                  {data.length}
-                </div>
-                <div className="text-xs text-gray-400 flex items-center gap-1">
-                  <LinkOutlined /> URLs
-                </div>
+        <motion.div {...fadeUp(0)}>
+          <Card className="mb-6 rounded-2xl !shadow-md !border-orange-100/60">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <motion.div
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Avatar
+                  size={72}
+                  icon={<UserOutlined />}
+                  className="bg-gradient-to-br from-primary to-orange-400 shrink-0 shadow-lg shadow-orange-200"
+                />
+              </motion.div>
+
+              <div className="flex-1">
+                <p className="text-xl font-bold text-gray-900">{user.name}</p>
+                <Text type="secondary">{user.email}</Text>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-gray-800">
-                  {data.reduce((sum, r) => sum + r.clicks, 0).toLocaleString()}
-                </div>
-                <div className="text-xs text-gray-400 flex items-center gap-1">
-                  <BarChartOutlined /> Total clicks
-                </div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-gray-800">
-                  {new Date(user.joinedAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </div>
-                <div className="text-xs text-gray-400 flex items-center gap-1">
-                  <CalendarOutlined /> Joined
-                </div>
+
+              <div className="flex gap-6 text-center">
+                {[
+                  { value: data.length,             label: "URLs",          icon: <LinkOutlined /> },
+                  { value: totalClicks.toLocaleString(), label: "Total clicks", icon: <BarChartOutlined /> },
+                  {
+                    value: new Date(user.joinedAt).toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+                    label: "Joined",
+                    icon: <CalendarOutlined />,
+                  },
+                ].map(({ value, label, icon }) => (
+                  <motion.div key={label} {...fadeUp(0.1)}>
+                    <div className="text-2xl font-bold text-gray-800">{value}</div>
+                    <div className="text-xs text-gray-400 flex items-center gap-1 justify-center">
+                      {icon} {label}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </motion.div>
 
         {/* URLs table */}
-        <Card className="rounded-2xl shadow-sm border-0">
-          <div className="flex items-center justify-between mb-4">
-            <Title level={5} className="!mb-0">
-              My URLs
-            </Title>
-            <Text type="secondary" className="text-sm">
-              {data.length} total
-            </Text>
-          </div>
-
-          <Table
-            columns={columns}
-            dataSource={data}
-            rowKey="key"
-            scroll={{ x: 700 }}
-            pagination={{
-              pageSize: 8,
-              showSizeChanger: true,
-              pageSizeOptions: ["8", "16", "24"],
-              showTotal: (total, range) =>
-                `${range[0]}–${range[1]} of ${total}`,
-            }}
-          />
-        </Card>
+        <motion.div {...fadeUp(0.15)}>
+          <Card className="rounded-2xl !shadow-md !border-orange-100/60">
+            <div className="flex items-center justify-between mb-4">
+              <p className="font-semibold text-base text-gray-800">My URLs</p>
+              <Text type="secondary" className="text-sm">{data.length} total</Text>
+            </div>
+            <Table
+              columns={columns}
+              dataSource={data}
+              rowKey="key"
+              scroll={{ x: 700 }}
+              pagination={{
+                pageSize: 8,
+                showSizeChanger: true,
+                pageSizeOptions: ["8", "16", "24"],
+                showTotal: (total, range) => `${range[0]}–${range[1]} of ${total}`,
+              }}
+            />
+          </Card>
+        </motion.div>
       </div>
 
       {/* Edit modal */}
@@ -257,10 +209,7 @@ export default function MyProfile() {
         title="Edit URL"
         open={!!editingRecord}
         onOk={handleEditSave}
-        onCancel={() => {
-          setEditingRecord(null);
-          form.resetFields();
-        }}
+        onCancel={() => { setEditingRecord(null); form.resetFields(); }}
         okText="Save"
         destroyOnHidden
       >
@@ -273,7 +222,7 @@ export default function MyProfile() {
             label="Destination URL"
             rules={[
               { required: true, message: "Please enter a URL" },
-              { type: "url", message: "Enter a valid URL" },
+              { type: "url",    message: "Enter a valid URL" },
             ]}
           >
             <Input placeholder="https://example.com/long-url" size="large" />
