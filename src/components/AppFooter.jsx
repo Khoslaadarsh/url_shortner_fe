@@ -28,7 +28,7 @@ export default function AppFooter() {
                 <LinkOutlined className="text-base" />
               </div>
               <span className="text-white font-bold text-lg">
-                Short<span className="text-blue-400">ly</span>
+                To<span className="text-blue-400">Short</span>
               </span>
             </Link>
             <p className="text-sm leading-relaxed">
@@ -60,7 +60,7 @@ export default function AppFooter() {
 
         <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm">
-            © {new Date().getFullYear()} Shortly. All rights reserved.
+            © {new Date().getFullYear()} ToShort. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="GitHub">

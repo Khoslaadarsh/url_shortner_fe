@@ -1,19 +1,40 @@
 import { useState } from "react";
-import { Button, Input, Typography } from "antd";
+import { Button, Input, Typography, DatePicker, TimePicker } from "antd";
 import { LinkOutlined, CopyOutlined, CheckOutlined } from "@ant-design/icons";
 import { showToast } from "../lib/toast";
 
 const { Title, Text } = Typography;
 
 const DEMO_SHORT_URL = "https://short.ly/abc123";
+const EXPIRY_PRESETS = ["1 Hour", "24 Hours", "7 Days"];
 
 export default function Home() {
   const [url, setUrl] = useState("");
+  const [customName, setCustomName] = useState("");
+  const [expiryPreset, setExpiryPreset] = useState(null);
+  const [expiryDate, setExpiryDate] = useState(null);
+  const [expiryTime, setExpiryTime] = useState(null);
   const [shortUrl, setShortUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const handleShorten = () => {
+  const handlePreset = (preset) => {
+    setExpiryPreset((prev) => (prev === preset ? null : preset));
+    setExpiryDate(null);
+    setExpiryTime(null);
+  };
+
+  const handleDateChange = (date) => {
+    setExpiryDate(date);
+    setExpiryPreset(null);
+  };
+
+  const handleTimeChange = (time) => {
+    setExpiryTime(time);
+    setExpiryPreset(null);
+  };
+
+  const handleGenerate = () => {
     if (!url.trim()) return;
 
     if (!url.includes(".com")) {
@@ -24,7 +45,6 @@ export default function Home() {
 
     setLoading(true);
     setShortUrl(null);
-    // Simulate API call
     setTimeout(() => {
       setShortUrl(DEMO_SHORT_URL);
       setLoading(false);
@@ -50,26 +70,82 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col gap-4">
+          {/* Long URL */}
           <Input
             size="large"
-            placeholder="Paste your long URL here..."
+            placeholder="Enter long URL *"
             className="rounded-lg"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            onPressEnter={handleShorten}
+            onPressEnter={handleGenerate}
           />
+
+          {/* Custom short name */}
+          <Input
+            size="large"
+            placeholder="Custom short name (optional)"
+            className="rounded-lg"
+            value={customName}
+            onChange={(e) => setCustomName(e.target.value)}
+          />
+
+          {/* Expiration */}
+          <div className="flex flex-col gap-2">
+            <Text type="secondary" className="text-sm">
+              Expiration (optional)
+            </Text>
+
+            {/* Preset buttons */}
+            <div className="flex gap-2">
+              {EXPIRY_PRESETS.map((preset) => (
+                <button
+                  key={preset}
+                  onClick={() => handlePreset(preset)}
+                  className={`px-3 py-1 rounded-full text-sm border transition-colors cursor-pointer ${
+                    expiryPreset === preset
+                      ? "bg-blue-500 text-white border-blue-500"
+                      : "bg-white text-gray-600 border-gray-300 hover:border-blue-400 hover:text-blue-500"
+                  }`}
+                >
+                  {preset}
+                </button>
+              ))}
+            </div>
+
+            {/* Date & Time pickers */}
+            <div className="flex gap-2 my-1">
+              <DatePicker
+                className="flex-1"
+                placeholder="mm/dd/yyyy"
+                format="MM/DD/YYYY"
+                value={expiryDate}
+                onChange={handleDateChange}
+              />
+              <TimePicker
+                className="flex-1"
+                placeholder="-- : -- --"
+                use12Hours
+                format="h:mm a"
+                value={expiryTime}
+                onChange={handleTimeChange}
+              />
+            </div>
+          </div>
+
+          {/* CTA */}
           <Button
             type="primary"
             size="large"
             block
             className="rounded-lg"
             loading={loading}
-            onClick={handleShorten}
+            onClick={handleGenerate}
           >
-            Shorten URL
+            Generate
           </Button>
         </div>
 
+        {/* Result */}
         {shortUrl && (
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
             <Text type="secondary" className="text-xs uppercase tracking-wide">

@@ -146,7 +146,7 @@ export default function AdminDashboard({ onAdminLogout }) {
           </div>
           <div>
             <Title level={5} className="!mb-0 !text-white">Admin Dashboard</Title>
-            <Text className="!text-gray-400 text-xs">Shortly — Restricted access</Text>
+            <Text className="!text-gray-400 text-xs">ToShort — Restricted access</Text>
           </div>
         </div>
         <Button

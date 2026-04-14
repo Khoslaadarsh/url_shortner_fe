@@ -95,7 +95,7 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
             <LinkOutlined className="text-lg" />
           </div>
           <span className="text-gray-900 font-bold text-lg leading-none">
-            Short<span className="text-blue-500">ly</span>
+            To<span className="text-blue-500">Short</span>
           </span>
         </Link>
 
@@ -113,7 +113,15 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
         </nav>
 
         {/* Desktop auth */}
-        <div className="hidden md:flex">
+        <div className="hidden md:flex items-center gap-3">
+          {isLoggedIn && (
+            <Link
+              to="/profile"
+              className="text-gray-600 hover:text-blue-500 font-medium text-sm transition-colors no-underline"
+            >
+              My URLs
+            </Link>
+          )}
           <AuthButtons />
         </div>
 
@@ -144,7 +152,7 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
               <LinkOutlined />
             </div>
             <span className="text-gray-900 font-bold">
-              Short<span className="text-blue-500">ly</span>
+              To<span className="text-blue-500">Short</span>
             </span>
           </Link>
         }
