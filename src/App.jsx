@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import PageLayout from "./components/PageLayout";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -17,6 +19,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ToastContainer stacked />
       <Routes>
         {/* Admin routes — no header/footer */}
         <Route
