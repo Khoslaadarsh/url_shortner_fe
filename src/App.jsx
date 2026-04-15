@@ -15,6 +15,7 @@ import Register from "./pages/Register.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
 import AdminLogin from "./pages/admin/AdminLogin.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import Redirect from "./pages/Redirect.jsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -25,6 +26,10 @@ function App() {
       <BrowserRouter>
         <ToastContainer stacked />
         <Routes>
+          {/* Redirect route — no header/footer */}
+          <Route path={`/${import.meta.env.VITE_SHORT_URL_PREFIX}/:slug`} element={<Redirect />} />
+          <Route path={`/${import.meta.env.VITE_SHORT_URL_PREFIX}`} element={<Redirect />} />
+
           {/* Admin routes — no header/footer */}
           <Route
             path="/admin/login"

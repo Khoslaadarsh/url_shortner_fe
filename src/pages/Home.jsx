@@ -12,8 +12,8 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 import { showToast } from "../lib/toast";
-
-const DEMO_SHORT_URL = "https://short.ly/abc123";
+import { getExpirySeconds } from "../lib/utils";
+import { shortenUrl } from "../services/urlService";
 const EXPIRY_PRESETS = ["1 Hour", "24 Hours", "7 Days"];
 
 const STATS = [
@@ -76,20 +76,38 @@ export default function Home() {
     setExpiryPreset(null);
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!url.trim()) return;
     if (!url.includes(".")) {
       showToast.error("Invalid URL — must contain a valid domain");
       setShortUrl(null);
       return;
     }
+
+    const expirySeconds = getExpirySeconds({
+      expiryPreset,
+      expiryDate,
+      expiryTime,
+    });
+
     setLoading(true);
     setShortUrl(null);
-    setTimeout(() => {
-      setShortUrl(DEMO_SHORT_URL);
-      setLoading(false);
+    try {
+      const data = await shortenUrl({
+        url: url.trim(),
+        expiry_seconds: expirySeconds || undefined,
+        short_code: customName.trim() || undefined,
+      });
+      console.log("Shortened URL data:", data);
+      setShortUrl(
+        `${import.meta.env.VITE_FE_DOMAIN_NAME}/${import.meta.env.VITE_SHORT_URL_PREFIX}/${data.short_code}`,
+      );
       showToast.success("Your URL has been shortened successfully!");
-    }, 800);
+    } catch (err) {
+      showToast.error(err.message ?? "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCopy = () => {
@@ -100,7 +118,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden bg-orange-50 px-4 py-14">
+    <div className="relative flex flex-1 flex-col items-center justify-center overflow-y-auto bg-orange-50 px-4 py-14">
       {/* ── Decorative background orbs ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="animate-float absolute -top-44 -right-44 h-[480px] w-[480px] rounded-full bg-orange-300/25 blur-3xl" />
@@ -154,6 +172,61 @@ export default function Home() {
           </div>
         </div>
 
+        {/* ── Result (above inputs) ── */}
+        <AnimatePresence>
+          {shortUrl && (
+            <motion.div
+              initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+              animate={{ opacity: 1, height: "auto", marginBottom: 16 }}
+              exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              style={{ overflow: "hidden" }}
+            >
+              {/* padding gives shadow room inside the overflow:hidden boundary */}
+              <div style={{ padding: "4px 4px 16px 4px" }}>
+              <div
+                className="rounded-2xl bg-white px-4 py-3 border border-orange-200"
+                style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04), 0 0 0 1px rgba(249,115,22,0.12)" }}
+              >
+                  <div className="mb-2 flex items-center gap-2">
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100">
+                      <CheckOutlined className="text-[10px] text-green-600" />
+                    </div>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-green-600">
+                      Ready to share
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-xl border border-orange-100 bg-orange-50 px-3 py-2">
+                    <a
+                      href={shortUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 truncate font-mono text-sm font-bold text-primary hover:underline"
+                    >
+                      {shortUrl}
+                    </a>
+                    <motion.div whileTap={{ scale: 0.93 }}>
+                      <Button
+                        size="small"
+                        type={copied ? "default" : "primary"}
+                        icon={copied ? <CheckOutlined /> : <CopyOutlined />}
+                        onClick={handleCopy}
+                        className={`!rounded-lg !font-semibold transition-all ${
+                          copied
+                            ? "!border-green-300 !text-green-600 !bg-green-50"
+                            : "!shadow-sm !shadow-orange-200"
+                        }`}
+                      >
+                        {copied ? "Copied!" : "Copy"}
+                      </Button>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>{/* padding wrapper */}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className="flex flex-col gap-4">
           {/* Long URL */}
           <Input
@@ -175,7 +248,7 @@ export default function Home() {
             onChange={(e) => setCustomName(e.target.value)}
             prefix={
               <span className="text-xs font-mono text-gray-400 select-none">
-                short.ly/
+                {import.meta.env.VITE_SHORT_URL_PREFIX}/
               </span>
             }
           />
@@ -241,46 +314,6 @@ export default function Home() {
             {loading ? "Shortening…" : "Generate Short URL"}
           </Button>
         </div>
-
-        {/* ── Animated result ── */}
-        <AnimatePresence>
-          {shortUrl && (
-            <motion.div
-              initial={{ opacity: 0, y: 12, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: "auto" }}
-              exit={{ opacity: 0, y: -8, height: 0 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden"
-            >
-              <div className="mt-5 rounded-xl border border-orange-100 bg-gradient-to-r from-orange-50 to-amber-50/60 p-4">
-                <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-orange-400">
-                  Your shortened URL
-                </p>
-                <div className="flex items-center gap-2">
-                  <a
-                    href={shortUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 truncate font-mono text-sm font-semibold text-primary hover:underline"
-                  >
-                    {shortUrl}
-                  </a>
-                  <motion.div whileTap={{ scale: 0.9 }}>
-                    <Button
-                      size="small"
-                      type="primary"
-                      icon={copied ? <CheckOutlined /> : <CopyOutlined />}
-                      onClick={handleCopy}
-                      className="!rounded-lg"
-                    >
-                      {copied ? "Copied!" : "Copy"}
-                    </Button>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.div>
 
       {/* ── Stats strip ── */}
