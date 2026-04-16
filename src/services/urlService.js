@@ -9,7 +9,7 @@ import { api } from "./api";
  * @returns {Promise<{ shortUrl: string }>}
  */
 export async function shortenUrl(payload) {
-  return api.post(`/${import.meta.env.VITE_URL_SHORTENER}/`, payload);
+  return api.post(`/${import.meta.env.VITE_URL_SHORTENER}`, payload);
 }
 
 /**

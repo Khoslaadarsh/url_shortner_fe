@@ -1,4 +1,1 @@
-/api/v1/urls/*  https://declan-unsupplantable-overeffusively.ngrok-free.dev/api/v1/urls/:splat  200
-/api/v1/urls/   https://declan-unsupplantable-overeffusively.ngrok-free.dev/api/v1/urls/        200
-/api/v1/urls    https://declan-unsupplantable-overeffusively.ngrok-free.dev/api/v1/urls/        200
-/*              /index.html                                                                      200
+/*  /index.html  200
