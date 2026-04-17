@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ANIMATION_DURATION } from "../data/constant";
 
 export default function PageLoader() {
   return (
@@ -9,7 +10,12 @@ export default function PageLoader() {
             key={i}
             className="w-2.5 rounded-full bg-primary"
             animate={{ height: ["10px", "42px", "10px"] }}
-            transition={{ duration: 0.7, repeat: Infinity, ease: "easeInOut", delay }}
+            transition={{
+              duration: ANIMATION_DURATION,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay,
+            }}
             style={{ height: "10px" }}
           />
         ))}

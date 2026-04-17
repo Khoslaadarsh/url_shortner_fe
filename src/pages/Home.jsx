@@ -1,30 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, Input } from "antd";
-import {
-  LinkOutlined,
-  CopyOutlined,
-  CheckOutlined,
-  ThunderboltOutlined,
-  SafetyOutlined,
-  BarChartOutlined,
-  ArrowRightOutlined,
-} from "@ant-design/icons";
+import { LinkOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { showToast } from "../lib/toast";
+import { fadeUp } from "../lib/animations";
+import { ANIMATION_DURATION, ANIMATION_EASING } from "../data/constant";
 import { shortenUrl } from "../services/urlService";
 import { ExpiryPicker } from "../components/ExpiryPicker";
-
-const STATS = [
-  { icon: ThunderboltOutlined, value: "10M+", label: "Links Shortened" },
-  { icon: SafetyOutlined, value: "99.9%", label: "Uptime" },
-  { icon: BarChartOutlined, value: "500M+", label: "Clicks Tracked" },
-];
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay },
-});
+import { ShortURLResult } from "../components/home/ShortURLResult";
+import { StatsStrip } from "../components/home/StatsStrip";
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -50,7 +34,6 @@ export default function Home() {
         expiry_seconds: expirySeconds || undefined,
         short_code: customName.trim() || undefined,
       });
-      console.log("Shortened URL data:", data);
       setShortUrl(
         `${window.location.origin}/${import.meta.env.VITE_SHORT_URL_PREFIX}/${data.short_code}`,
       );
@@ -71,12 +54,11 @@ export default function Home() {
 
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center overflow-y-auto bg-orange-50 px-4 py-14">
-      {/* ── Decorative background orbs ── */}
+      {/* Decorative background orbs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="animate-float absolute -top-44 -right-44 h-[480px] w-[480px] rounded-full bg-orange-300/25 blur-3xl" />
         <div className="animate-float-delayed absolute -bottom-44 -left-44 h-[400px] w-[400px] rounded-full bg-amber-300/20 blur-3xl" />
         <div className="animate-pulse-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-72 w-72 rounded-full bg-primary/8 blur-2xl" />
-        {/* subtle grid overlay */}
         <div
           className="absolute inset-0 opacity-[0.025]"
           style={{
@@ -87,7 +69,7 @@ export default function Home() {
         />
       </div>
 
-      {/* ── Hero text ── */}
+      {/* Hero text */}
       <motion.div className="relative z-10 mb-10 text-center" {...fadeUp(0)}>
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
           Short links,{" "}
@@ -104,12 +86,11 @@ export default function Home() {
         </p>
       </motion.div>
 
-      {/* ── Card ── */}
+      {/* Card */}
       <motion.div
         className="glass-card relative z-10 w-full max-w-md rounded-2xl p-8"
         {...fadeUp(0.12)}
       >
-        {/* Card header */}
         <div className="mb-6 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-orange-400 text-white shadow-lg shadow-orange-200">
             <LinkOutlined className="text-lg" />
@@ -124,63 +105,28 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── Result (above inputs) ── */}
         <AnimatePresence>
           {shortUrl && (
             <motion.div
               initial={{ opacity: 0, height: 0, marginBottom: 0 }}
               animate={{ opacity: 1, height: "auto", marginBottom: 16 }}
               exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: ANIMATION_DURATION,
+                ease: ANIMATION_EASING,
+              }}
               style={{ overflow: "hidden" }}
             >
-              {/* padding gives shadow room inside the overflow:hidden boundary */}
-              <div style={{ padding: "4px 4px 16px 4px" }}>
-              <div
-                className="rounded-2xl bg-white px-4 py-3 border border-orange-200"
-                style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04), 0 0 0 1px rgba(249,115,22,0.12)" }}
-              >
-                  <div className="mb-2 flex items-center gap-2">
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100">
-                      <CheckOutlined className="text-[10px] text-green-600" />
-                    </div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-green-600">
-                      Ready to share
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 rounded-xl border border-orange-100 bg-orange-50 px-3 py-2">
-                    <a
-                      href={shortUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 truncate font-mono text-sm font-bold text-primary hover:underline"
-                    >
-                      {shortUrl}
-                    </a>
-                    <motion.div whileTap={{ scale: 0.93 }}>
-                      <Button
-                        size="small"
-                        type={copied ? "default" : "primary"}
-                        icon={copied ? <CheckOutlined /> : <CopyOutlined />}
-                        onClick={handleCopy}
-                        className={`!rounded-lg !font-semibold transition-all ${
-                          copied
-                            ? "!border-green-300 !text-green-600 !bg-green-50"
-                            : "!shadow-sm !shadow-orange-200"
-                        }`}
-                      >
-                        {copied ? "Copied!" : "Copy"}
-                      </Button>
-                    </motion.div>
-                  </div>
-                </div>
-              </div>{/* padding wrapper */}
+              <ShortURLResult
+                shortUrl={shortUrl}
+                copied={copied}
+                onCopy={handleCopy}
+              />
             </motion.div>
           )}
         </AnimatePresence>
 
         <div className="flex flex-col gap-4">
-          {/* Long URL */}
           <Input
             size="large"
             placeholder="https://your-very-long-url.com/..."
@@ -191,7 +137,6 @@ export default function Home() {
             prefix={<LinkOutlined className="text-gray-300" />}
           />
 
-          {/* Custom short name */}
           <Input
             size="large"
             placeholder="Custom short name (optional)"
@@ -205,7 +150,6 @@ export default function Home() {
             }
           />
 
-          {/* Expiration */}
           <div className="flex flex-col gap-2">
             <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
               Expiration{" "}
@@ -214,7 +158,6 @@ export default function Home() {
             <ExpiryPicker onChange={setExpirySeconds} />
           </div>
 
-          {/* CTA */}
           <Button
             type="primary"
             size="large"
@@ -230,24 +173,7 @@ export default function Home() {
         </div>
       </motion.div>
 
-      {/* ── Stats strip ── */}
-      <motion.div
-        className="relative z-10 mt-10 flex items-center gap-8 sm:gap-14"
-        {...fadeUp(0.24)}
-      >
-        {STATS.map(({ icon: Icon, value, label }) => (
-          <div
-            key={label}
-            className="flex flex-col items-center gap-1 text-center"
-          >
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-50 text-primary text-base">
-              <Icon />
-            </div>
-            <span className="text-lg font-bold text-gray-800">{value}</span>
-            <span className="text-xs text-gray-400">{label}</span>
-          </div>
-        ))}
-      </motion.div>
+      <StatsStrip />
     </div>
   );
 }

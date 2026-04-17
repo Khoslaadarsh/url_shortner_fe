@@ -9,6 +9,7 @@ import {
   LogoutOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+import { ANIMATION_DURATION, ANIMATION_EASING } from "../data/constant";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -95,7 +96,7 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
     <motion.header
       initial={{ y: -64, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: ANIMATION_DURATION, ease: ANIMATION_EASING }}
       className="sticky top-0 z-50 border-b border-white/40 bg-white/80 backdrop-blur-xl shadow-sm"
     >
       {/* Subtle orange accent line on top */}

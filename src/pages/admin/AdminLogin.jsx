@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 import { Button, Form, Input } from "antd";
-import { LockOutlined, UserOutlined, SafetyCertificateOutlined } from "@ant-design/icons";
+import {
+  LockOutlined,
+  UserOutlined,
+  SafetyCertificateOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminLogin({ onAdminLogin }) {
@@ -34,7 +38,7 @@ export default function AdminLogin({ onAdminLogin }) {
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: ANIMATION_DURATION, ease: ANIMATION_EASING }}
           className="flex justify-center mb-6"
         >
           <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full backdrop-blur-sm">
@@ -46,7 +50,11 @@ export default function AdminLogin({ onAdminLogin }) {
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          transition={{
+            duration: ANIMATION_DURATION,
+            ease: ANIMATION_EASING,
+            delay: 0.1,
+          }}
           className="rounded-2xl border border-gray-800 bg-gray-900/80 backdrop-blur-xl shadow-2xl shadow-black/40 p-8"
         >
           {/* Header */}
@@ -55,14 +63,27 @@ export default function AdminLogin({ onAdminLogin }) {
               <SafetyCertificateOutlined className="text-2xl" />
             </div>
             <h2 className="text-2xl font-bold text-white">Admin Portal</h2>
-            <p className="mt-1 text-sm text-gray-500">Restricted to authorized personnel</p>
+            <p className="mt-1 text-sm text-gray-500">
+              Restricted to authorized personnel
+            </p>
           </div>
 
-          <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={onFinish}
+            requiredMark={false}
+          >
             <Form.Item
               name="username"
-              label={<span className="text-xs font-semibold uppercase tracking-wider text-gray-500">Username</span>}
-              rules={[{ required: true, message: "Please enter your username" }]}
+              label={
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  Username
+                </span>
+              }
+              rules={[
+                { required: true, message: "Please enter your username" },
+              ]}
             >
               <Input
                 prefix={<UserOutlined className="text-gray-600" />}
@@ -74,8 +95,14 @@ export default function AdminLogin({ onAdminLogin }) {
 
             <Form.Item
               name="password"
-              label={<span className="text-xs font-semibold uppercase tracking-wider text-gray-500">Password</span>}
-              rules={[{ required: true, message: "Please enter your password" }]}
+              label={
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  Password
+                </span>
+              }
+              rules={[
+                { required: true, message: "Please enter your password" },
+              ]}
             >
               <Input.Password
                 prefix={<LockOutlined className="text-gray-600" />}
@@ -103,11 +130,14 @@ export default function AdminLogin({ onAdminLogin }) {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.35 }}
+          transition={{ duration: ANIMATION_DURATION, delay: 0.35 }}
           className="text-center text-gray-600 text-xs mt-6"
         >
           Not an admin?{" "}
-          <a href="/login" className="text-gray-400 hover:text-white transition-colors">
+          <a
+            href="/login"
+            className="text-gray-400 hover:text-white transition-colors"
+          >
             Go to user login
           </a>
         </motion.p>
