@@ -2,7 +2,7 @@ import { Navigate, useLocation } from "react-router-dom";
 
 export default function PublicOnlyRoute({ isLoggedIn, redirectTo, children }) {
   const location = useLocation();
-  if (isLoggedIn) {
+  if (isLoggedIn?.status === "authenticated") {
     const from = location.state?.from?.pathname || "/";
     return <Navigate to={redirectTo || from} replace />;
   }

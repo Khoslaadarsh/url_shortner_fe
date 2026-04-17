@@ -44,7 +44,7 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
   };
 
   const AuthButtons = ({ vertical = false }) =>
-    isLoggedIn ? (
+    isLoggedIn?.status === "authenticated" ? (
       <Dropdown
         menu={{
           items: userMenuItems(handleLogout, () => navigate("/profile")),
@@ -130,7 +130,7 @@ export default function AppHeader({ isLoggedIn, onLogout }) {
 
         {/* Desktop auth */}
         <div className="hidden md:flex items-center gap-3">
-          {isLoggedIn && (
+          {isLoggedIn?.status === "authenticated" && (
             <Link
               to="/profile"
               className="text-gray-500 hover:text-primary font-medium text-sm transition-colors no-underline px-3 py-1.5 rounded-lg hover:bg-orange-50"

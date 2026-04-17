@@ -13,7 +13,9 @@ function buildUrl(path) {
  * @returns {Promise<{ shortUrl: string }>}
  */
 export async function shortenUrl(payload) {
-  return api.post(buildUrl(import.meta.env.VITE_URL_SHORTENER), payload);
+  return api.post(buildUrl(import.meta.env.VITE_URL_SHORTENER), payload, {
+    withCredentials: true,
+  });
 }
 
 /**
@@ -26,11 +28,34 @@ export async function resolveUrl(slug) {
 }
 
 /**
+ * @param {string} slug
+ * @param {{ url: string }} payload
+ * @returns {Promise<any>}
+ */
+export async function updateUrl(slug, payload) {
+  return api.put(buildUrl(`${import.meta.env.VITE_URL_SHORTENER}/${slug}`), payload, {
+    withCredentials: true,
+  });
+}
+
+/**
+ * @param {string} slug
+ * @returns {Promise<void>}
+ */
+export async function deleteUrl(slug) {
+  return api.delete(buildUrl(`${import.meta.env.VITE_URL_SHORTENER}/${slug}`), {
+    withCredentials: true,
+  });
+}
+
+/**
  * @param {{ email: string, password: string }} payload
  * @returns {Promise<{ token: string }>}
  */
 export async function loginUrl(payload) {
-  return api.post(buildUrl(import.meta.env.VITE_LOGIN_URL), payload);
+  return api.post(buildUrl(import.meta.env.VITE_LOGIN_URL), payload, {
+    withCredentials: true,
+  });
 }
 
 /**
@@ -38,18 +63,27 @@ export async function loginUrl(payload) {
  * @returns {Promise<any>}
  */
 export async function registerUrl(payload) {
-  return api.post(buildUrl(import.meta.env.VITE_SIGNUP_URL), payload);
+  return api.post(buildUrl(import.meta.env.VITE_SIGNUP_URL), payload, {
+    withCredentials: true,
+  });
 }
 
 /**
  * @returns {Promise<void>}
  */
 export async function logoutUrl() {
-  return api.post(
-    buildUrl(import.meta.env.VITE_SIGNOUT_URL),
-    {},
-    { withCredentials: true },
-  );
+  return api.post(buildUrl(import.meta.env.VITE_SIGNOUT_URL), {}, {
+    withCredentials: true,
+  });
+}
+
+/**
+ * @returns {Promise<any>}
+ */
+export async function getProfileUrl() {
+  return api.get(buildUrl(import.meta.env.VITE_PROFILE_GET_URL), {
+    withCredentials: true,
+  });
 }
 
 /**
@@ -58,9 +92,8 @@ export async function logoutUrl() {
 export async function isAuthenticatedUrl() {
   const data = await api.get(
     buildUrl(import.meta.env.VITE_IS_AUTHENTICATED_URL),
-    {},
     { withCredentials: true },
   );
   console.log("isAuthenticated response:", data);
-  return data.authenticated;
+  return data.logged_in;
 }

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button, Input, DatePicker, TimePicker } from "antd";
-import dayjs from "dayjs";
+import { Button, Input } from "antd";
 import {
   LinkOutlined,
   CopyOutlined,
@@ -12,9 +11,8 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 import { showToast } from "../lib/toast";
-import { getExpirySeconds } from "../lib/utils";
 import { shortenUrl } from "../services/urlService";
-const EXPIRY_PRESETS = ["1 Hour", "24 Hours", "7 Days"];
+import { ExpiryPicker } from "../components/ExpiryPicker";
 
 const STATS = [
   { icon: ThunderboltOutlined, value: "10M+", label: "Links Shortened" },
@@ -31,50 +29,10 @@ const fadeUp = (delay = 0) => ({
 export default function Home() {
   const [url, setUrl] = useState("");
   const [customName, setCustomName] = useState("");
-  const [expiryPreset, setExpiryPreset] = useState(null);
-  const [expiryDate, setExpiryDate] = useState(null);
-  const [expiryTime, setExpiryTime] = useState(null);
+  const [expirySeconds, setExpirySeconds] = useState(null);
   const [shortUrl, setShortUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  const handlePreset = (preset) => {
-    setExpiryPreset((prev) => (prev === preset ? null : preset));
-    setExpiryDate(null);
-    setExpiryTime(null);
-  };
-
-  const isToday = (date) => date && date.isSame(dayjs(), "day");
-
-  const disabledDate = (current) =>
-    current && current.isBefore(dayjs().startOf("day"));
-
-  const disabledTime = () => {
-    if (!isToday(expiryDate)) return {};
-    const now = dayjs();
-    const currentHour = now.hour();
-    const currentMinute = now.minute();
-    return {
-      disabledHours: () => Array.from({ length: currentHour }, (_, i) => i),
-      disabledMinutes: (selectedHour) =>
-        selectedHour === currentHour
-          ? Array.from({ length: currentMinute + 1 }, (_, i) => i)
-          : [],
-    };
-  };
-
-  const handleDateChange = (date) => {
-    setExpiryDate(date);
-    setExpiryPreset(null);
-    if (date && date.isSame(dayjs(), "day") && expiryTime) {
-      if (expiryTime.isBefore(dayjs(), "minute")) setExpiryTime(null);
-    }
-  };
-
-  const handleTimeChange = (time) => {
-    setExpiryTime(time);
-    setExpiryPreset(null);
-  };
 
   const handleGenerate = async () => {
     if (!url.trim()) return;
@@ -83,12 +41,6 @@ export default function Home() {
       setShortUrl(null);
       return;
     }
-
-    const expirySeconds = getExpirySeconds({
-      expiryPreset,
-      expiryDate,
-      expiryTime,
-    });
 
     setLoading(true);
     setShortUrl(null);
@@ -259,45 +211,7 @@ export default function Home() {
               Expiration{" "}
               <span className="normal-case font-normal">(optional)</span>
             </p>
-
-            {/* Preset pills */}
-            <div className="flex gap-2">
-              {EXPIRY_PRESETS.map((preset) => (
-                <button
-                  key={preset}
-                  onClick={() => handlePreset(preset)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer ${
-                    expiryPreset === preset
-                      ? "bg-primary text-white border-primary shadow-sm shadow-orange-200"
-                      : "bg-white/60 text-gray-500 border-gray-200 hover:border-primary hover:text-primary"
-                  }`}
-                >
-                  {preset}
-                </button>
-              ))}
-            </div>
-
-            {/* Date & Time pickers */}
-            <div className="flex gap-2">
-              <DatePicker
-                className="flex-1"
-                placeholder="mm/dd/yyyy"
-                format="MM/DD/YYYY"
-                value={expiryDate}
-                onChange={handleDateChange}
-                disabledDate={disabledDate}
-              />
-              <TimePicker
-                className="flex-1"
-                placeholder="-- : -- --"
-                use12Hours
-                format="h:mm a"
-                value={expiryTime}
-                onChange={handleTimeChange}
-                disabledTime={disabledTime}
-                showNow={false}
-              />
-            </div>
+            <ExpiryPicker onChange={setExpirySeconds} />
           </div>
 
           {/* CTA */}

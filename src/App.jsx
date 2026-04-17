@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { themes } from "./lib/theme";
 import PageLayout from "./components/PageLayout";
+import PageLoader from "./components/PageLoader";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import AdminThemeProvider from "./components/AdminThemeProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -19,22 +20,21 @@ import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import Redirect from "./pages/Redirect.jsx";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState({ status: "loading" });
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
-  useEffect(() => {
-    async function checkAuth() {
-      try {
-        await isAuthenticated();
-        setIsLoggedIn(true);
-      } catch {
-        setIsLoggedIn(false);
-      } finally {
-        setLoading(false);
-      }
-    }
 
-    checkAuth();
+  useEffect(() => {
+    let authenticated = false;
+    Promise.all([
+      isAuthenticated().then(() => { authenticated = true; }).catch(() => {}),
+      new Promise((resolve) => setTimeout(resolve, 2000)),
+    ]).then(() => {
+      setIsLoggedIn({ status: authenticated ? "authenticated" : "unauthenticated" });
+    });
   }, []);
+
+  if (isLoggedIn.status === "loading") return <PageLoader />;
+
   return (
     <ConfigProvider theme={themes.user.antd}>
       <BrowserRouter>
@@ -85,7 +85,7 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 onLogout={() => {
                   authLogout();
-                  setIsLoggedIn(false);
+                  setIsLoggedIn({ status: "unauthenticated" });
                 }}
               >
                 <Routes>
@@ -101,7 +101,7 @@ function App() {
                     path="/login"
                     element={
                       <PublicOnlyRoute isLoggedIn={isLoggedIn}>
-                        <Login onLogin={() => setIsLoggedIn(true)} />
+                        <Login onLogin={() => setIsLoggedIn({ status: "authenticated" })} />
                       </PublicOnlyRoute>
                     }
                   />
@@ -109,7 +109,7 @@ function App() {
                     path="/register"
                     element={
                       <PublicOnlyRoute isLoggedIn={isLoggedIn}>
-                        <Register onLogin={() => setIsLoggedIn(true)} />
+                        <Register onLogin={() => setIsLoggedIn({ status: "authenticated" })} />
                       </PublicOnlyRoute>
                     }
                   />
